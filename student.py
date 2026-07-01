@@ -18,25 +18,22 @@ class StudentDatabase:
             print(s.student_id, s.name, s.department, s.is_enrolled)
 
 
+students = [
+    (101, "Rahim", "Management", False),
+    (102, "Karim", "CSE", True),
+    (103, "Bosir", "CSE", True),
+    (104, "Arosh Khan", "CSE", False),
+    (105, "Munna", "Management", True),
+    (106, "Arohi", "Tripoli", True),
+    (107, "Sujon Ahmed", "Tripoli", False),
+    (108, "Nazmul Hasan", "Physiology", True)
+]
+
 sd = StudentDatabase()
 
-s1 = Student(101, "Rahim", "Management", False)
-s2 = Student(102, "Karim", "CSE", True)
-s3 = Student(103, "Bosir", "CSE", True)
-s4 = Student(104, "Arosh Khan", "CSE", False)
-s5 = Student(105, "Munna", "Management", True)
-s6 = Student(106, "Arohi", "Tripoli", True)
-s7 = Student(107, "Sujon Ahmed", "Tripoli", False)
-s8 = Student(108, "Nazmul Hasan", "Physiology", True)
-
-sd.add_student(s1)
-sd.add_student(s2)
-sd.add_student(s3)
-sd.add_student(s4)
-sd.add_student(s5)
-sd.add_student(s6)
-sd.add_student(s7)
-sd.add_student(s8)
+for s in students:
+    student_obj = Student(*s)
+    sd.add_student(student_obj)
 
 
 
@@ -51,9 +48,10 @@ while True:
     option = int(input('Enter Your Choice (1-4): '))
 
     if option == 1:
-        print("\n---------------------------------------------------------------------\n")
+        print('\n-------- View All Students --------\n')
         sd.view_students()
     elif option == 2:
+        print('\n-------- Enroll Student --------\n')
         pass
     elif option == 3:
         pass
