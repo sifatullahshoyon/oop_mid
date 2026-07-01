@@ -5,6 +5,13 @@ class Student:
         self.department = department
         self.is_enrolled = is_enrolled
 
+    def enroll_student(self):
+        if self.is_enrolled:
+            print(f"Student {self.student_id} is already enrolled.")
+        else:
+            self.is_enrolled = True
+            print(f"Student {self.student_id} enrolled successfully.")
+
 
 class StudentDatabase:
     def __init__(self):
@@ -14,9 +21,30 @@ class StudentDatabase:
         self.student_list.append(student)
 
     def view_students(self):
+        print("\n------ Student List ------")
         for s in self.student_list:
-            print(s.student_id, s.name, s.department, s.is_enrolled)
+            print(
+                f"ID: {s.student_id}, "
+                f"Name: {s.name}, "
+                f"Dept: {s.department}, "
+                f"Enrolled: {s.is_enrolled}"
+            )
 
+    def find_student(self, student_id):
+        for student in self.student_list:
+            if student.student_id == student_id:
+                return student
+        return None
+
+    def enroll_student_by_id(self, student_id):
+        student = self.find_student(student_id)
+        if student:
+            student.enroll_student()
+        else:
+            print("Student not found!")
+
+
+# ---------------- DATA ----------------
 
 students = [
     (101, "Rahim", "Management", False),
@@ -32,30 +60,27 @@ students = [
 sd = StudentDatabase()
 
 for s in students:
-    student_obj = Student(*s)
-    sd.add_student(student_obj)
+    sd.add_student(Student(*s))
 
 
+# ---------------- MENU ----------------
 
 while True:
-    print('\n-------- Student Managment Menu --------\n')
+    print("\n-------- Student Management Menu --------\n")
+    print("1. View All Students")
+    print("2. Enroll Student")
+    print("3. Drop Student")
+    print("4. Exit")
 
-    print('1. View All Students')
-    print('2. Enroll Student')
-    print('3. Drop Student')
-    print('4. Exit')
-
-    option = int(input('Enter Your Choice (1-4): '))
+    option = int(input("Enter Your Choice (1-4): "))
 
     if option == 1:
-        print('\n-------- View All Students --------\n')
         sd.view_students()
     elif option == 2:
-        print('\n-------- Enroll Student --------\n')
-        pass
+        sid = int(input("Enter Student ID: "))
+        sd.enroll_student_by_id(sid)
     elif option == 3:
         pass
-    elif option == 4:
-        pass
     else:
-        print('Wrong Option. Choose Again\n')
+        print("Exiting program...")
+        break
