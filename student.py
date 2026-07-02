@@ -7,10 +7,17 @@ class Student:
 
     def enroll_student(self):
         if self.is_enrolled:
-            print(f"Student {self.student_id} is already enrolled.")
+            print(f"Error: Student {self.student_id} is already enrolled.")
         else:
             self.is_enrolled = True
             print(f"Student {self.student_id} enrolled successfully.")
+
+    def drop_student(self):
+        if not self.is_enrolled:
+            print(f"Error: Student {self.student_id} is not enrolled.")
+        else:
+            self.is_enrolled = False
+            print(f"Student {self.student_id} dropped successfully.")
 
 
 class StudentDatabase:
@@ -20,31 +27,43 @@ class StudentDatabase:
     def add_student(self, student):
         self.student_list.append(student)
 
-    def view_students(self):
-        print("\n------ Student List ------")
-        for s in self.student_list:
-            print(
-                f"ID: {s.student_id}, "
-                f"Name: {s.name}, "
-                f"Dept: {s.department}, "
-                f"Enrolled: {s.is_enrolled}"
-            )
-
     def find_student(self, student_id):
         for student in self.student_list:
             if student.student_id == student_id:
                 return student
         return None
 
-    def enroll_student_by_id(self, student_id):
+    def enroll_student(self, student_id):
         student = self.find_student(student_id)
-        if student:
-            student.enroll_student()
-        else:
-            print("Student not found!")
+
+        if student is None:
+            print("Error: Invalid Student ID.")
+            return
+
+        student.enroll_student()
+
+    def drop_student(self, student_id):
+        student = self.find_student(student_id)
+
+        if student is None:
+            print("Error: Invalid Student ID.")
+            return
+
+        student.drop_student()
+
+    def view_students(self):
+        print("\n---------------- Student List ----------------")
+
+        for student in self.student_list:
+            print(
+                f"ID: {student.student_id}, "
+                f"Name: {student.name}, "
+                f"Department: {student.department}, "
+                f"Enrolled: {student.is_enrolled}"
+            )
 
 
-# ---------------- DATA ----------------
+# ---------------- Data ----------------
 
 students = [
     (101, "Rahim", "Management", False),
@@ -59,11 +78,12 @@ students = [
 
 sd = StudentDatabase()
 
-for s in students:
-    sd.add_student(Student(*s))
+for student_data in students:
+    student = Student(*student_data)
+    sd.add_student(student)
 
 
-# ---------------- MENU ----------------
+# ---------------- Menu ----------------
 
 while True:
     print("\n-------- Student Management Menu --------\n")
@@ -72,15 +92,28 @@ while True:
     print("3. Drop Student")
     print("4. Exit")
 
+
     option = int(input("Enter Your Choice (1-4): "))
 
     if option == 1:
         sd.view_students()
+
     elif option == 2:
-        sid = int(input("Enter Student ID: "))
-        sd.enroll_student_by_id(sid)
+        print("\n---------------- Enroll Student ----------------\n")
+        student_id = int(input("Enter Student ID: "))
+        sd.enroll_student(student_id)
+          
     elif option == 3:
-        pass
-    else:
+        print("\n---------------- Drop Student ----------------\n")
+        student_id = int(input("Enter Student ID: "))
+        sd.drop_student(student_id)
+
+    elif option == 4:
         print("Exiting program...")
         break
+
+    else:
+        print("Error: Please choose a number between 1 and 4.")
+
+   
+
